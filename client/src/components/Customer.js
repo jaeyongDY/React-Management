@@ -22,27 +22,27 @@ class Customer extends React.Component{
     }
 }
 
-class CustomerProfile extends React.Component{
-    render(){
-        return( //alt값은 이미지에 대한 설명, 즉 속성에 대한 설명을 나타내는 것이다.
-            <div>
-                <img src={this.props.image} alt="profile"/> 
-                <h2>{this.props.name}({this.props.id})</h2>
-            </div>
-        )
-    }
-}
+// class CustomerProfile extends React.Component{
+//     render(){
+//         return( //alt값은 이미지에 대한 설명, 즉 속성에 대한 설명을 나타내는 것이다.
+//             <div>
+//                 <img src={this.props.image} alt="profile"/> 
+//                 <h2>{this.props.name}({this.props.id})</h2>
+//             </div>
+//         )
+//     }
+// }
 
-class CustomerInfo extends React.Component{
-    render(){
-        return(
-            <div>
-                <p>{this.props.birthday}</p>
-                <p>{this.props.gender}</p>
-                <p>{this.props.job}</p>
-            </div>
-        )
-    }
-}
+// class CustomerInfo extends React.Component{
+//     render(){
+//         return(
+//             <div>
+//                 <p>{this.props.birthday}</p>
+//                 <p>{this.props.gender}</p>
+//                 <p>{this.props.job}</p>
+//             </div>
+//         )
+//     }
+// }
 
 export default Customer;

@@ -1,0 +1,5 @@
+파일을 새로 만든 뒤 ex) node_first 파일로 들어가서 
+1. create-react-app management 써줌
+2. cd management로 이동
+3. npm install -g yarn   -g => 글로벌 
+4. yarn start ==> 웹서버 실행
