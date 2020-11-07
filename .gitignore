@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# database gitignore에 등록해서 정보 유출 불가
+/database.json
+
 # dependencies
 /node_modules
 /.pnp

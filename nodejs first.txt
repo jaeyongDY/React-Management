@@ -3,3 +3,10 @@
 2. cd management로 이동
 3. npm install -g yarn   -g => 글로벌 
 4. yarn start ==> 웹서버 실행
+
+
+현재 동빈나 node & react 8강까지 들음
+
+react 와 서버 api 연결 참고
+https://create-react-app.dev/docs/proxying-api-requests-in-development/
+https://velog.io/@velopert/create-react-app-v2

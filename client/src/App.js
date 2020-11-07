@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import {withStyles} from '@material-ui/core/styles';
 
 const styles = theme =>({
@@ -18,6 +19,9 @@ const styles = theme =>({
   },
   table:{
     minWidth:1080
+  },
+  progress:{
+    margin:theme.spacing.unit*2
   }
 })
 
@@ -48,23 +52,56 @@ const styles = theme =>({
 //   } 
 // ]
 
+/*
+1) constructor()
+
+2) componentWillMount()
+
+3) render()
+
+4) componentDidMount()
+
+*/
+
+/*
+
+props or state => shouldComponentUpdate() //props나 state가 변화하게 될 경우
+
+*/
 class App extends Component{
 
   state={
-    customers:""
+    customers:"",
+    completed: 0
   }
 
   componentDidMount(){ //서버에 접근해서 데이터를 가져오는 함수
-    this.callApi()
-      .then(res=> this.setState({customers : res})) //callApi함수를 불러오면 res라는 변수에 customers정보들을 넣어주는 것이다.messages
-      .catch(err => console.log(err));
+    this.timer=setInterval(this.progress,20); //0.02초마다 progress가 한번씩 호출한다.
+    setTimeout(()=>{
+      this.callApi();
+    },2000); //setInterval과 setTimeout은 동일한 문법을 사용
+    //일부러 지연 발생 => 로딩화면 봐야됨
+    //this.callApi();
+      //.then(res => this.setState({customers : res})) //callApi함수를 불러오면 res라는 변수에 customers정보들을 넣어주는 것이다.messages
+      //.catch(err => console.log(err));
   }
 
   callApi = async() =>{
-    //const response=await fetch('/api/customers');
-    const response=await fetch('/api/customers');
-    const body= await response.json();
-    return body;
+    try{
+      const response=await fetch('/api/customers');
+      const body= await response.json();
+      this.setState({
+        customers:body
+      }); //바꿔서 사용가능하다. 위쪽 this.callApi()에 사용 안해도 여기서 사용가능하다.
+      return body;
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+  progress=()=>{
+    const {completed}=this.state;
+    this.setState({completed:completed>=100 ? 0:completed+1});
   }
 
   render(){
@@ -130,8 +167,13 @@ class App extends Component{
               )
               //참일때는 데이터를 제공하고 거짓일때는 ""으로 빈값을 리턴한다.
               //f12를 페이지에서 누르고 network경로에서 새로고침시 port3000번대로 네트워크가 수신되기 때문에 5000번으로 설정한 우리한테는 데이터가 안온다.
-
-            }): ""} 
+            }): 
+            <TableRow>
+              <TableCell colSpan="6" align="center">
+                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+              </TableCell>
+            </TableRow>
+            } 
           </TableBody>
         </Table>
       </Paper>
