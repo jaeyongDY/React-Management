@@ -2,6 +2,7 @@
 import React,{Component} from 'react';
 import './App.css';
 import Customer from './components/Customer';
+import CustomerAdd from './components/CustomerAdd';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -135,48 +136,50 @@ class App extends Component{
       //   /> */
       //  }
       //  </div>
-      
-      <Paper className={classes.root}>
-        <Table className={classes.table}> 
-          <TableHead>
-            <TableRow>
-              <TableCell>번호</TableCell>
-              <TableCell>이미지</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell>생년월일</TableCell>
-              <TableCell>성별</TableCell>
-              <TableCell>직업</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.customers ? this.state.customers.map(c => { //customers라는 정보를 하드코딩해서 customers.map으로 접근하였지만 해당 정보를 state라는 값으로 변경 되었기 때문에 this.stat를 붙여준다.
-              //state라는 변수로 접근하게 변경한 후에 페이지로 접속시 에러가 난다-> 비동기식 설정방식으로 했는데 처음 state에는 customer이라는 빈 정보를 선언했고
-              //state가 비어있는 상태에서 .map으로 각 데이터에 접근을 시도하기 때문에 오류가 난다. 그래서 this.state.customers ?을 넣어서 참일 때만 접속을 허용한다.
-              //map 함수를 사용함으로써 특정 배열의 각 원소에 접근을 해서 어떻게 처리할 건지 명시를 함 python에도 map을 똑같이 사용함
-              //map을 이용해서 다수의 정보를 출력할 때는 key props를 사용해야한다. 
-              return(
-                <Customer
-                  key={c.id}
-                  id={c.id}
-                  image={c.image}
-                  name={c.name}
-                  birthday={c.birthday}
-                  gender={c.gender}
-                  job={c.job}
-                />
-              )
-              //참일때는 데이터를 제공하고 거짓일때는 ""으로 빈값을 리턴한다.
-              //f12를 페이지에서 누르고 network경로에서 새로고침시 port3000번대로 네트워크가 수신되기 때문에 5000번으로 설정한 우리한테는 데이터가 안온다.
-            }): 
-            <TableRow>
-              <TableCell colSpan="6" align="center">
-                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
-              </TableCell>
-            </TableRow>
-            } 
-          </TableBody>
-        </Table>
-      </Paper>
+      <div>
+        <Paper className={classes.root}>
+          <Table className={classes.table}> 
+            <TableHead>
+              <TableRow>
+                <TableCell>번호</TableCell>
+                <TableCell>이미지</TableCell>
+                <TableCell>이름</TableCell>
+                <TableCell>생년월일</TableCell>
+                <TableCell>성별</TableCell>
+                <TableCell>직업</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.customers ? this.state.customers.map(c => { //customers라는 정보를 하드코딩해서 customers.map으로 접근하였지만 해당 정보를 state라는 값으로 변경 되었기 때문에 this.stat를 붙여준다.
+                //state라는 변수로 접근하게 변경한 후에 페이지로 접속시 에러가 난다-> 비동기식 설정방식으로 했는데 처음 state에는 customer이라는 빈 정보를 선언했고
+                //state가 비어있는 상태에서 .map으로 각 데이터에 접근을 시도하기 때문에 오류가 난다. 그래서 this.state.customers ?을 넣어서 참일 때만 접속을 허용한다.
+                //map 함수를 사용함으로써 특정 배열의 각 원소에 접근을 해서 어떻게 처리할 건지 명시를 함 python에도 map을 똑같이 사용함
+                //map을 이용해서 다수의 정보를 출력할 때는 key props를 사용해야한다. 
+                return(
+                  <Customer
+                    key={c.id}
+                    id={c.id}
+                    image={c.image}
+                    name={c.name}
+                    birthday={c.birthday}
+                    gender={c.gender}
+                    job={c.job}
+                  />
+                )
+                //참일때는 데이터를 제공하고 거짓일때는 ""으로 빈값을 리턴한다.
+                //f12를 페이지에서 누르고 network경로에서 새로고침시 port3000번대로 네트워크가 수신되기 때문에 5000번으로 설정한 우리한테는 데이터가 안온다.
+              }): 
+              <TableRow>
+                <TableCell colSpan="6" align="center">
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+                </TableCell>
+              </TableRow>
+              } 
+            </TableBody>
+          </Table>
+        </Paper>
+        <CustomerAdd/>
+      </div>
     );
   }
 }

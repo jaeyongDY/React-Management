@@ -1,5 +1,5 @@
 const express =require('express');
-const bodyParser=require('body-parser');
+const bodyParser=require('body-parser'); //post 방식(1) 
 const fs=require('fs'); //database.json으로부터 환경설정 정보를 얻어와야하기 때문에 fs라는 파일에 접근할 수 있는 라이브러리를 불러와야함
 const app=express();
 const port = process.env.PORT ||5000;
@@ -12,6 +12,9 @@ const port = process.env.PORT ||5000;
 const data=fs.readFileSync('./database.json');
 const conf=JSON.parse(data);
 const mysql = require('mysql');
+
+app.use(bodyParser.urlencoded({extended:true})); //post 방식(2) url인코딩이 계속 적용될지 1번만 적용될지에 대해 물어봄
+// 데이터 방식 : get은 어떠한 데이터를 전달해주는 방식, post는 데이터 값을 변경하는 방식
 
 const connection=mysql.createConnection({
     host:conf.host,
@@ -27,6 +30,10 @@ app.get('/api/customers',(req,res)=>{
         "SELECT * FROM CUSTOMER",
         (err,rows,fields) => {
             res.send(rows);
+            if(err){
+                console.log(err);
+                res.status(500).send('Internal Server Error');
+            } 
         }
     );
 });
