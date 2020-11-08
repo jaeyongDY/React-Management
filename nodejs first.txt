@@ -5,8 +5,33 @@
 4. yarn start ==> 웹서버 실행
 
 
-현재 동빈나 node & react 8강까지 들음
-
 react 와 서버 api 연결 참고
 https://create-react-app.dev/docs/proxying-api-requests-in-development/
 https://velog.io/@velopert/create-react-app-v2
+
+
+USE management;
+
+CREATE TABLE CUSTOMER (
+id INT PRIMARY KEY AUTO_INCREMENT,
+image VARCHAR(1024),
+name VARCHAR(64),
+birthday VARCHAR(64),
+gender VARCHAR(64),
+job VARCHAR(64)
+) DEFAULT CHARACTER SET UTF8 COLLATE utf8_general_ci;
+
+
+USE management;
+
+INSERT INTO CUSTOMER VALUES (1,'https://placeimg,com/64/64/1','홍길동','960508','남자','대학생');
+
+ALTER TABLE customer ADD createdDate DATETIME;
+ALTER TABLE customer ADD isDeleted INT;
+/* 영향 받은 행: 0  찾은 행: 0  경고: 0  지속 시간 3 쿼리: 0.218 초 */
+USE management;
+SELECT * FROM customer;
+/* 영향 받은 행: 0  찾은 행: 5  경고: 0  지속 시간 2 쿼리: 0.000 초 */
+USE management;
+UPDATE customer SET createdDate = NOW();
+UPDATE customer SET isDeleted =0;

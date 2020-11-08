@@ -26,12 +26,12 @@ const connection=mysql.createConnection({
 
 connection.connect();
 const multer = require('multer'); //파일을 불러오는 라이브러리 npm install --save multer
-const { execPath } = require('process');
+//const { execPath } = require('process');
 const upload=multer({dest:'./upload'});
 
 app.get('/api/customers',(req,res)=>{
     connection.query(
-        'SELECT * FROM CUSTOMER',
+        'SELECT * FROM CUSTOMER WHERE isDeleted = 0',
         (err,rows,fields)=>{
             res.send(rows)
             if(err){
@@ -76,8 +76,9 @@ app.get('/api/customers',(req,res)=>{
 
 app.use('/image',express.static('./upload'));
 app.post('/api/customers',upload.single('image'),(req,res)=>{
-    let sql='INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?)';
-    let image = '/image/'+req.file.filename;
+    let sql='INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)';
+    let image = '/image/'+req.file;
+    //let image = '/image/'+req.file.filename; 차이점?
     let name=req.body.name;
     let birthday=req.body.birthday;
     let gender=req.body.gender;
@@ -94,5 +95,18 @@ app.post('/api/customers',upload.single('image'),(req,res)=>{
         }
     )
 });
+
+app.delete('/api/customers/:id',(req,res)=>{
+    let sql='UPDATE CUSTOMER SET isDeleted =1 WHERE id=?';
+    let params=[req.params.id];
+    connection.query(sql,params,
+        (err,rows,fields)=>{
+            res.send(rows);
+            if(err){
+                console.log(err);
+                res.status(500).send('Error');
+            }
+        });
+})
 
 app.listen(port,()=>console.log(`Listen on port ${port}`));
