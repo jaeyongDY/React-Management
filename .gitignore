@@ -3,6 +3,9 @@
 # database gitignore에 등록해서 정보 유출 불가
 /database.json
 
+#upload
+/upload
+
 # dependencies
 /node_modules
 /.pnp

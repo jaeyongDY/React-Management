@@ -71,9 +71,28 @@ props or state => shouldComponentUpdate() //props나 state가 변화하게 될 �
 */
 class App extends Component{
 
-  state={
-    customers:"",
-    completed: 0
+  // state={
+  //   customers:"",
+  //   completed: 0
+  // }
+
+  constructor(props){
+    super(props);
+    this.state={
+      customers:'',
+      completed:0
+    }
+  }
+
+  stateRefresh=()=>{ //홈페이지 전체를 새로고침하는 것이아니라 프로필 부분만 새로고침을 하게 한다.
+    this.setState({
+      customers:'',
+      completed:0
+    });
+    this.timer=setInterval(this.progress,20); //0.02초마다 progress가 한번씩 호출한다.
+    setTimeout(()=>{
+      this.callApi();
+    },2000);
   }
 
   componentDidMount(){ //서버에 접근해서 데이터를 가져오는 함수
@@ -178,7 +197,7 @@ class App extends Component{
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh={this.stateRefresh}/>
       </div>
     );
   }

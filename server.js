@@ -23,13 +23,17 @@ const connection=mysql.createConnection({
     port:conf.port,
     database:conf.database
 });
+
 connection.connect();
+const multer = require('multer'); //파일을 불러오는 라이브러리 npm install --save multer
+const { execPath } = require('process');
+const upload=multer({dest:'./upload'});
 
 app.get('/api/customers',(req,res)=>{
     connection.query(
-        "SELECT * FROM CUSTOMER",
-        (err,rows,fields) => {
-            res.send(rows);
+        'SELECT * FROM CUSTOMER',
+        (err,rows,fields)=>{
+            res.send(rows)
             if(err){
                 console.log(err);
                 res.status(500).send('Internal Server Error');
@@ -69,5 +73,26 @@ app.get('/api/customers',(req,res)=>{
 //         } 
 //     ]);
 // })
+
+app.use('/image',express.static('./upload'));
+app.post('/api/customers',upload.single('image'),(req,res)=>{
+    let sql='INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?)';
+    let image = '/image/'+req.file.filename;
+    let name=req.body.name;
+    let birthday=req.body.birthday;
+    let gender=req.body.gender;
+    let job=req.body.job;
+    let params=[image,name,birthday,gender,job];
+    connection.query(sql,params,
+        (err,rows,fields)=>{
+            res.send(rows)
+            console.log(rows)
+            if(err){
+                //console.log(err);
+                res.status(500).send('Error');
+            }
+        }
+    )
+});
 
 app.listen(port,()=>console.log(`Listen on port ${port}`));
